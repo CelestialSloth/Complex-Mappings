@@ -21,7 +21,6 @@ class ComplexPlanePlot {
     noStroke();
     rect(this.x, this.y, this.width, this.height);
 
-    stroke(0);
     strokeWeight(10);
     this.points.forEach(z => this.plotPoint(z));
     
@@ -34,7 +33,11 @@ class ComplexPlanePlot {
 
     var a = this.x + (z.a - this.minReal) * ReStep;
     var b = this.y - (z.b - this.maxIm) * ImStep;
-
-    point(a, b);
+    
+    if(a > this.x && a < this.x + this.width
+      && b > this.y && b < this.y + this.height){
+        stroke(z.color);
+        point(a, b);
+      }
   }
 }

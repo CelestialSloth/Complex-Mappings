@@ -4,7 +4,10 @@ var mappedPts = [];
 var ptsPlot;
 
 function f(z) {
-  return z.times(z);
+  w = new ComplexNumber(0.5, -0.5);
+  mappedZ = z.times(z).times(w);
+  mappedZ.color = z.color;
+  return mappedZ;
 }
 
 function setup() {
@@ -19,8 +22,9 @@ function setup() {
   // }
 
   //make a line
-  for (var y = -1; y < 1; y += 0.1) {
+  for (var y = -1.5; y < 1.5; y += 0.05) {
     var z = new ComplexNumber(1, y);
+    z.color = color(0, 125 + y*90, 255);
     pts.push(z);
     mappedPts.push(f(z));
   }
