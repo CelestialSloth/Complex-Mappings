@@ -26,18 +26,51 @@ class ComplexPlanePlot {
     
   }
 
+  
+
+  plotToCanvasCoordinates(z) {
+    let ReStep = this.width / (this.maxReal - this.minReal);
+    let ImStep = this.height / (this.maxIm - this.minIm);
+
+    let x = this.x + (z.a - this.minReal) * ReStep;
+    let y = this.y - (z.b - this.maxIm) * ImStep;
+
+    return [x, y];
+  }
+
+  /** Convert canvas coordinates to an imaginary number in the plot */
+  canvasToPlotCoordinates(canvasX, canvasY) {
+    let ReStep = this.width / (this.maxReal - this.minReal);
+    let ImStep = this.height / (this.maxIm - this.minIm);
+    
+    let Re = (canvasX - this.x) / ReStep + this.minReal;
+    let Im = (canvasY - this.y) / (ImStep)*(-1) + this.maxIm;
+
+    return new ComplexNumber(Re, Im);
+  }
+
+  /** Given canvas coordinates, convert the point to an imaginary number that the plot can use, add this to points[], and return the imaginary number */
+  addPointInCanvasCoordinates(canvasX, canvasY) {
+    z = this.canvasToPlotCoordinates(canvasX, canvasY);
+    this.points.append(z);
+    return z;
+  }
+  
   /** Plot a given complex number (z) on the complex plane, as specified by this class's attributes. */
   plotPoint(z){
-    var ReStep = this.width / (this.maxReal - this.minReal);
-    var ImStep = this.height / (this.maxIm - this.minIm);
+    let canvasCoordinates = this.plotToCanvasCoordinates(z);
 
-    var a = this.x + (z.a - this.minReal) * ReStep;
-    var b = this.y - (z.b - this.maxIm) * ImStep;
+    let x = canvasCoordinates[0];
+    let y = canvasCoordinates[1];
     
-    if(a > this.x && a < this.x + this.width
-      && b > this.y && b < this.y + this.height){
-        stroke(z.color);
-        point(a, b);
-      }
+    if(this.inPlot(x, y)){
+      stroke(z.color);
+      point(x, y);
+    }
+  }
+
+  // returns whether a given point on the canvas is inside this plot
+  inPlot(x, y) {
+    return x > this.x && x < this.x + this.width && y > this.y && y < this.y + this.height;
   }
 }

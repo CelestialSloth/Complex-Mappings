@@ -1,11 +1,11 @@
 
-var pts = [];
-var mappedPts = [];
-var ptsPlot;
+let pts = [];
+let mappedPts = [];
+let ptsPlot;
 
 function f(z) {
-  w = new ComplexNumber(0.5, -0.5);
-  mappedZ = z.times(z).times(w);
+  let w = new ComplexNumber(0, 1);
+  mappedZ = z.times(w);
   mappedZ.color = z.color;
   return mappedZ;
 }
@@ -21,22 +21,37 @@ function setup() {
   //   mappedPts.push(f(z));
   // }
 
-  //make a line
-  for (var y = -1.5; y < 1.5; y += 0.05) {
-    var z = new ComplexNumber(1, y);
-    z.color = color(0, 125 + y*90, 255);
-    pts.push(z);
-    mappedPts.push(f(z));
-  }
-
   ptsPlot = new ComplexPlanePlot(-2, 2, -2, 2, 50, 50, 200, 200);
-  ptsPlot.points = pts;
 
   mappedPtsPlot = new ComplexPlanePlot(-2, 2, -2, 2, 300, 50, 200, 200);
-  mappedPtsPlot.points = mappedPts;
+  
+  //make a line
+  // for (var y = -1.5; y < 1.5; y += 0.05) {
+  //   var z = new ComplexNumber(1, y);
+  //   z.color = color(0, 125 + y*90, 255);
+  //   ptsPlot.points.push(z);
+  //   mappedPtsPlot.points.push(f(z));
+  // }
+
+  
 }
 
+
+
 function draw() {
+  if(mouseIsPressed) {
+    x = mouseX;
+    y = mouseY;
+    
+    if(ptsPlot.inPlot(x, y)) {
+      let z = ptsPlot.canvasToPlotCoordinates(x, y);
+      z.color = color(0, 0, 0);
+      ptsPlot.points.push(z);
+      mappedPtsPlot.points.push(f(z));
+    }
+      
+  }
+  
   ptsPlot.draw();
   mappedPtsPlot.draw();
 }
