@@ -21,12 +21,12 @@ class ComplexPlanePlot {
     noStroke();
     rect(this.x, this.y, this.width, this.height);
 
-    strokeWeight(10);
+    strokeWeight(5);
     this.points.forEach(z => this.plotPoint(z));
-    
+
   }
 
-  
+
 
   plotToCanvasCoordinates(z) {
     let ReStep = this.width / (this.maxReal - this.minReal);
@@ -42,9 +42,9 @@ class ComplexPlanePlot {
   canvasToPlotCoordinates(canvasX, canvasY) {
     let ReStep = this.width / (this.maxReal - this.minReal);
     let ImStep = this.height / (this.maxIm - this.minIm);
-    
+
     let Re = (canvasX - this.x) / ReStep + this.minReal;
-    let Im = (canvasY - this.y) / (ImStep)*(-1) + this.maxIm;
+    let Im = (canvasY - this.y) / (ImStep) * (-1) + this.maxIm;
 
     return new ComplexNumber(Re, Im);
   }
@@ -55,15 +55,15 @@ class ComplexPlanePlot {
     this.points.append(z);
     return z;
   }
-  
+
   /** Plot a given complex number (z) on the complex plane, as specified by this class's attributes. */
-  plotPoint(z){
+  plotPoint(z) {
     let canvasCoordinates = this.plotToCanvasCoordinates(z);
 
     let x = canvasCoordinates[0];
     let y = canvasCoordinates[1];
-    
-    if(this.inPlot(x, y)){
+
+    if (this.inPlot(x, y)) {
       stroke(z.color);
       point(x, y);
     }

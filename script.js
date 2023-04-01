@@ -1,11 +1,13 @@
-
+//TODO: figure out square root weirdness (static seems diff from nonstatic)
+//TODO: test more thoroughly
 let pts = [];
 let mappedPts = [];
 let ptsPlot;
 
 function f(z) {
   let w = new ComplexNumber(0, 1);
-  mappedZ = z.times(w);
+  //mappedZ = z.times(z);
+  mappedZ = ComplexNumber.sqrt(z);
   mappedZ.color = z.color;
   return mappedZ;
 }
