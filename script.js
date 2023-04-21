@@ -19,9 +19,6 @@ function setFString(fStr) {
   fString = fStr;
 }
 
-// TODO: code reset method so mapped pts get recalculated when new transformations are selected
-
-//TODO: 
 function f(z) {
   let mappedZ = z;
   if (fString == 'iz') {
@@ -50,6 +47,54 @@ function f(z) {
   return mappedZ;
 }
 
+function drawArrow() {
+  stroke(0);
+  strokeWeight(3);
+  line(canvasWidth / 24 * 11, canvasHeight / 10 + canvasWidth / 6, canvasWidth / 24 * 13, canvasHeight / 10 + canvasWidth / 6);
+  line(canvasWidth / 24 * 13, canvasHeight / 10 + canvasWidth / 6, canvasWidth / 24 * 13 * 0.97, canvasHeight / 10 + canvasWidth / 6 * 0.93)
+  line(canvasWidth / 24 * 13, canvasHeight / 10 + canvasWidth / 6, canvasWidth / 24 * 13 * 0.97, canvasHeight / 10 + canvasWidth / 6 * 1.07)
+}
+
+function drawfOfz() {
+  textAlign(CENTER, BOTTOM);
+  textSize(canvasWidth / 40);
+  noStroke();
+  fill(0);
+  text("f(z)", canvasWidth / 24 * 12, canvasHeight / 10 + canvasWidth / 6 * 0.9)
+}
+
+function windowResized() {
+  canvasWidth = canvasDiv.offsetWidth;
+  canvasHeight = canvasWidth * 0.5;
+  ptsPlot.width = canvasWidth / 3;
+  ptsPlot.x = canvasWidth / 12;
+  ptsPlot.y = canvasHeight / 10;
+  ptsPlot.height = canvasWidth / 3;
+  mappedPtsPlot.width = canvasWidth / 3;
+  mappedPtsPlot.height = canvasWidth / 3;
+  mappedPtsPlot.x = canvasWidth / 12 * 7;
+  mappedPtsPlot.y = canvasHeight / 10;
+  resizeCanvas(canvasWidth, canvasHeight);
+}
+
+// recalculate the point positions after the plot has been altered
+// weird at start
+function recalculatePlot() {
+  mappedPts = [];
+  for (pt of pts) {
+    mappedPts.push(f(pt));
+  }
+
+  ptsPlot.resetPoints(minRe, maxRe, minIm, maxIm, pts);
+  mappedPtsPlot.resetPoints(minRe, maxRe, minIm, maxIm, mappedPts);
+}
+
+// delete all the points
+function clearPts() {
+  pts = [];
+  mappedPts = [];
+  recalculatePlot();
+}
 function setup() {
   createCanvas(canvasWidth, canvasHeight);
 
@@ -114,44 +159,3 @@ function draw() {
   drawfOfz();
 }
 
-function drawArrow() {
-  stroke(0);
-  strokeWeight(3);
-  line(canvasWidth / 24 * 11, canvasHeight / 10 + canvasWidth / 6, canvasWidth / 24 * 13, canvasHeight / 10 + canvasWidth / 6);
-  line(canvasWidth / 24 * 13, canvasHeight / 10 + canvasWidth / 6, canvasWidth / 24 * 13 * 0.97, canvasHeight / 10 + canvasWidth / 6 * 0.93)
-  line(canvasWidth / 24 * 13, canvasHeight / 10 + canvasWidth / 6, canvasWidth / 24 * 13 * 0.97, canvasHeight / 10 + canvasWidth / 6 * 1.07)
-}
-
-function drawfOfz() {
-  textAlign(CENTER, BOTTOM);
-  textSize(canvasWidth / 40);
-  noStroke();
-  fill(0);
-  text("f(z)", canvasWidth / 24 * 12, canvasHeight / 10 + canvasWidth / 6 * 0.9)
-}
-
-function windowResized() {
-  canvasWidth = canvasDiv.offsetWidth;
-  canvasHeight = canvasWidth * 0.5;
-  ptsPlot.width = canvasWidth / 3;
-  ptsPlot.x = canvasWidth / 12;
-  ptsPlot.y = canvasHeight / 10;
-  ptsPlot.height = canvasWidth / 3;
-  mappedPtsPlot.width = canvasWidth / 3;
-  mappedPtsPlot.height = canvasWidth / 3;
-  mappedPtsPlot.x = canvasWidth / 12 * 7;
-  mappedPtsPlot.y = canvasHeight / 10;
-  resizeCanvas(canvasWidth, canvasHeight);
-}
-
-// recalculate the point positions after the plot has been altered
-// weird at start
-function recalculatePlot() {
-  mappedPts = [];
-  for (pt of pts) {
-    mappedPts.push(f(pt));
-  }
-
-  ptsPlot.resetPoints(minRe, maxRe, minIm, maxIm, pts);
-  mappedPtsPlot.resetPoints(minRe, maxRe, minIm, maxIm, mappedPts);
-}

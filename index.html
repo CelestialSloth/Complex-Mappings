@@ -13,6 +13,14 @@
   <h1 class>Complex Mappings</h1>
   <div id='fzBox'>
     <div id='fzOptions'>
+      <span id='colorSchemeText'>Color scheme: </span>
+      <select name='colorSchemes'>
+        <option value="standard">standard</option>
+        <option value="monochrome">monochrome</option>
+        <option value="rainbow">rainbow</option>
+      </select>
+      <br>
+      
       <span id='fzDef'>f(z) = </span>
       <select name='f(z)' id='functionSelector'>
         <option value="2z">2z</option>
@@ -23,6 +31,9 @@
         <option value="e^z">e^z</option>
         <option value="conj(z)">conj(z)</option>
       </select>
+      <br>
+      <button id='deleteButton'>Delete all points</button>
+      
     </div>
   </div>
   <div id='canvas'></div>
@@ -31,13 +42,16 @@
   <script src="script.js"></script>
   <script src="complexPlanePlot.js"></script>
   <script>
-    // displays the height value
     let functionSelector = document.getElementById('functionSelector');
-
     functionSelector.oninput = function () {
       let f = this.value;
       setFString(f);
       recalculatePlot();
+    }
+
+    let deleteButton = document.getElementById('deleteButton');
+    deleteButton.onclick = function () {
+      clearPts();
     }
   </script>
 
