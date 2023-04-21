@@ -4,16 +4,43 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>repl.it</title>
+  <title>Complex Mappings</title>
   <link href="style.css" rel="stylesheet" type="text/css" />
-  <h1>Complex Mappings</h1>
   <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
 </head>
 
 <body>
+  <h1 class>Complex Mappings</h1>
+  <div id='fzBox'>
+    <div id='fzOptions'>
+      <span id='fzDef'>f(z) = </span>
+      <select name='f(z)' id='functionSelector'>
+        <option value="2z">2z</option>
+        <option value="iz">iz</option>
+        <option value="z^2">z^2</option>
+        <option value="1/z">1/z</option>
+        <option value="log(z)">log(z)</option>
+        <option value="e^z">e^z</option>
+        <option value="conj(z)">conj(z)</option>
+      </select>
+    </div>
+  </div>
+  <div id='canvas'></div>
+
   <script src="complexNumber.js"></script>
   <script src="script.js"></script>
   <script src="complexPlanePlot.js"></script>
+  <script>
+    // displays the height value
+    let functionSelector = document.getElementById('functionSelector');
+
+    functionSelector.oninput = function () {
+      let f = this.value;
+      setFString(f);
+      recalculatePlot();
+    }
+  </script>
+
 </body>
 
 </html>

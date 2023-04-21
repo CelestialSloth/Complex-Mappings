@@ -1,3 +1,4 @@
+
 class ComplexPlanePlot {
   /** 
   minReal, maxReal, minIm, maxIm: the bounds for the real and imaginary axes. Will not display beyond these bounds.
@@ -16,17 +17,62 @@ class ComplexPlanePlot {
     this.points = []
   }
 
-  draw() {
-    fill(255);
-    noStroke();
-    rect(this.x, this.y, this.width, this.height);
-
-    strokeWeight(10);
-    this.points.forEach(z => this.plotPoint(z));
-    
+  // reset function
+  // TODO: make some parameters optional?
+  resetPoints(minReal, maxReal, minIm, maxIm, points) {
+    this.minReal = minReal;
+    this.maxReal = maxReal;
+    this.minIm = minIm;
+    this.maxIm = maxIm;
+    this.points = points;
   }
 
-  
+  draw() {
+    fill(255);
+    stroke(0);
+    strokeWeight(1)
+    rect(this.x, this.y, this.width, this.height);
+
+    
+    this.drawAxes();
+    
+    strokeWeight(3);
+    this.points.forEach(z => this.plotPoint(z));
+
+    this.labelPlot();
+  }
+
+  labelPlot() {
+    textSize(windowWidth/50);
+    fill(0);
+    noStroke();
+    textAlign(RIGHT, TOP);
+    text(this.maxIm + "i ", this.x, this.y);
+    textAlign(RIGHT, BOTTOM);
+    text(this.minIm + "i ", this.x, this.y + this.height);
+    textAlign(LEFT, TOP);
+    text(this.minReal, this.x, this.y + this.height);
+    textAlign(RIGHT, TOP);
+    text(this.maxReal, this.x + this.width, this.y + this.height);
+  }
+
+  drawAxes() {
+    stroke(230, 100, 100);
+    strokeWeight(2);
+    // TODO: make this way cleaner (let plotToCanvasCoordinates also accept two numbers instead of complexNumber)
+    let origin = this.plotToCanvasCoordinates(new ComplexNumber(0, 0));
+    if (this.minIm < 0 && this.maxIm > 0) {
+      let leftXAxis = this.plotToCanvasCoordinates(new ComplexNumber(this.minReal, 0));
+      let rightXAxis = this.plotToCanvasCoordinates(new ComplexNumber(this.maxReal, 0));
+      line(leftXAxis[0], leftXAxis[1], rightXAxis[0], rightXAxis[1]);
+    }
+    if (this.minReal < 0 && this.maxReal > 0) {
+      let topYAxis = this.plotToCanvasCoordinates(new ComplexNumber(0, this.maxIm));
+      let bottomYAxis = this.plotToCanvasCoordinates(new ComplexNumber(0, this.minIm));
+      line(bottomYAxis[0], bottomYAxis[1], topYAxis[0], topYAxis[1]);
+    }
+  }
+
 
   plotToCanvasCoordinates(z) {
     let ReStep = this.width / (this.maxReal - this.minReal);
@@ -42,9 +88,9 @@ class ComplexPlanePlot {
   canvasToPlotCoordinates(canvasX, canvasY) {
     let ReStep = this.width / (this.maxReal - this.minReal);
     let ImStep = this.height / (this.maxIm - this.minIm);
-    
+
     let Re = (canvasX - this.x) / ReStep + this.minReal;
-    let Im = (canvasY - this.y) / (ImStep)*(-1) + this.maxIm;
+    let Im = (canvasY - this.y) / (ImStep) * (-1) + this.maxIm;
 
     return new ComplexNumber(Re, Im);
   }
@@ -55,15 +101,15 @@ class ComplexPlanePlot {
     this.points.append(z);
     return z;
   }
-  
+
   /** Plot a given complex number (z) on the complex plane, as specified by this class's attributes. */
-  plotPoint(z){
+  plotPoint(z) {
     let canvasCoordinates = this.plotToCanvasCoordinates(z);
 
     let x = canvasCoordinates[0];
     let y = canvasCoordinates[1];
-    
-    if(this.inPlot(x, y)){
+
+    if (this.inPlot(x, y)) {
       stroke(z.color);
       point(x, y);
     }

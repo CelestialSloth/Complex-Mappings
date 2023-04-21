@@ -1,0 +1,35 @@
+* {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1 {
+  font-size: 40px;
+  text-align: center;
+}
+
+body {
+  max-width: 850px;
+  margin: auto;
+  margin-top: 5%;
+  border: 3px solid green;
+  padding: 20px;
+}
+
+select {
+  background: white;
+  color: black;
+  border-color: black;
+}
+#fzBox{
+  align-self: center;
+  background-color: gray;
+  padding: 0.25em;
+}
+#fzOptions{
+  background-color: white;
+  padding: 0.25em;
+  margin: 1em;
+}
+#functionSelector, span {
+  font-size: 20px;
+}
