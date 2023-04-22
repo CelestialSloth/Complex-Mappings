@@ -1,4 +1,4 @@
-
+// TODO: no longer using point.color. Possibly get rid of?
 class ComplexPlanePlot {
   /** 
   minReal, maxReal, minIm, maxIm: the bounds for the real and imaginary axes. Will not display beyond these bounds.
@@ -15,6 +15,27 @@ class ComplexPlanePlot {
     this.width = width;
     this.height = height;
     this.points = []
+    
+    this.colorScheme = 'standard';
+    this.axesColor = color(230, 100, 100);
+    this.ptColor = color(0,0,0);
+  }
+
+  // manages the color scheme.
+  colorSchemeManager() {
+    if (this.colorScheme == 'standard') {
+      this.axesColor = color(230, 100, 100);
+      this.ptColor = color(0,0,0);
+    }
+    else if (this.colorScheme == 'monochrome') {
+      this.axesColor = color(100, 100, 100);
+      this.ptColor = color(0, 0, 0);
+    }
+    else {
+      //standard for now
+      this.axesColor = color(230, 100, 100);
+      this.ptColor = color(0,0,0);
+    }
   }
 
   // reset function
@@ -57,7 +78,7 @@ class ComplexPlanePlot {
   }
 
   drawAxes() {
-    stroke(230, 100, 100);
+    stroke(this.axesColor);
     strokeWeight(2);
     // TODO: make this way cleaner (let plotToCanvasCoordinates also accept two numbers instead of complexNumber)
     let origin = this.plotToCanvasCoordinates(new ComplexNumber(0, 0));
@@ -110,7 +131,7 @@ class ComplexPlanePlot {
     let y = canvasCoordinates[1];
 
     if (this.inPlot(x, y)) {
-      stroke(z.color);
+      stroke(this.ptColor);
       point(x, y);
     }
   }

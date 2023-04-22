@@ -9,14 +9,20 @@ let minIm = -4;
 
 //TODO: figure out square root weirdness (static seems diff from nonstatic)
 //TODO: test more thoroughly
-let pts = [];
-let mappedPts = [];
 let ptsPlot;
 let mappedPtsPlot;
 
-let fString = '';
+let fString = '2z';
 function setFString(fStr) {
   fString = fStr;
+}
+
+//change the color scheme
+function setColorScheme(newScheme) {
+  ptsPlot.colorScheme = newScheme;
+  mappedPtsPlot.colorScheme = newScheme;
+  ptsPlot.colorSchemeManager();
+  mappedPtsPlot.colorSchemeManager();
 }
 
 function f(z) {
@@ -80,7 +86,8 @@ function windowResized() {
 // recalculate the point positions after the plot has been altered
 // weird at start
 function recalculatePlot() {
-  mappedPts = [];
+  let mappedPts = [];
+  let pts = ptsPlot.points;
   for (pt of pts) {
     mappedPts.push(f(pt));
   }
@@ -91,9 +98,8 @@ function recalculatePlot() {
 
 // delete all the points
 function clearPts() {
-  pts = [];
-  mappedPts = [];
-  recalculatePlot();
+  ptsPlot.points = [];
+  mappedPtsPlot.points = [];
 }
 function setup() {
   createCanvas(canvasWidth, canvasHeight);

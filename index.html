@@ -14,7 +14,7 @@
   <div id='fzBox'>
     <div id='fzOptions'>
       <span id='colorSchemeText'>Color scheme: </span>
-      <select name='colorSchemes'>
+      <select name='colorSchemes' id='colorSchemeSelector'>
         <option value="standard">standard</option>
         <option value="monochrome">monochrome</option>
         <option value="rainbow">rainbow</option>
@@ -42,6 +42,11 @@
   <script src="script.js"></script>
   <script src="complexPlanePlot.js"></script>
   <script>
+    let colorSchemeSelector = document.getElementById('colorSchemeSelector');
+    colorSchemeSelector.oninput = function () {
+      setColorScheme(this.value);
+    }
+    
     let functionSelector = document.getElementById('functionSelector');
     functionSelector.oninput = function () {
       let f = this.value;
