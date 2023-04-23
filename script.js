@@ -105,7 +105,8 @@ function clearPts() {
   mappedPtsPlot.points = [];
 }
 function setup() {
-  createCanvas(canvasWidth, canvasHeight);
+  let canvas = createCanvas(canvasWidth, canvasHeight);
+  canvas.parent('program');
 
   let w = new ComplexNumber(0, 0);
 

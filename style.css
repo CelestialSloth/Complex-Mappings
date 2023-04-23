@@ -12,8 +12,8 @@ body {
   max-width: 850px;
   margin: auto;
   margin-top: 5%;
-  border: 3px solid green;
   padding: 20px;
+  
 }
 
 select {
@@ -21,6 +21,13 @@ select {
   color: black;
   border-color: black;
 }
+
+#text-exp, #program {
+  border: 3px solid green;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
 #fzBox{
   align-self: center;
   background-color: gray;
@@ -30,8 +37,6 @@ select {
   background-color: white;
   padding: 0.25em;
   margin: 1em;
-}
-#functionSelector, span {
 }
 
 button{

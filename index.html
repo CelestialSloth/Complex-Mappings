@@ -10,56 +10,67 @@
 </head>
 
 <body>
-  <h1 class>Complex Mappings</h1>
-  <div id='fzBox'>
-    <div id='fzOptions'>
-      <span id='colorSchemeText'>Color scheme: </span>
-      <select name='colorSchemes' id='colorSchemeSelector'>
-        <option value="standard">standard</option>
-        <option value="monochrome">monochrome</option>
-        <option value="rainbow">rainbow</option>
-      </select>
-      <br>
+  <div id='text-exp'>
+    <h1 class>Complex Mappings</h1>
 
-      <span id='fzDef'>f(z) = </span>
-      <select name='f(z)' id='functionSelector'>
-        <option value="2z">2z</option>
-        <option value="iz">iz</option>
-        <option value="z^2">z^2</option>
-        <option value="sqrt(z)">sqrt(z)</option>
-        <option value="1/z">1/z</option>
-        <option value="log(z)">log(z)</option>
-        <option value="e^z">e^z</option>
-        <option value="conj(z)">conj(z)</option>
-      </select>
-      <br>
-      <button id='deleteButton'>Delete all points</button>
+    <p>This is an interactive program providing a visualization of mappings of complex functions, that is, functions with a complex input and a complex output.</p>
+    <p>To use the program, draw on the graph (input complex plane) on the left. As you draw, the points will be mapped using the function <em>f</em> and appear on the graph on the right.</p>
+    <p>Note that for some functions, like <em>f(z)=log(z)</em> and <em>f(z)=sqrt(z)</em>, there are multiple (or even infinite) values of <em>f(z)</em> that would be satisfactory. In these cases, we choose the value of <em>f(z)</em> belonging to the principle branch of <em>f</em>. To visualize all satisfactory values, you would need to work with Riemann Surfaces (and would need more than two dimensions).</p>
 
-    </div>
+    
   </div>
-  <div id='canvas'></div>
-
-  <script src="complexNumber.js"></script>
-  <script src="script.js"></script>
-  <script src="complexPlanePlot.js"></script>
-  <script>
-    let colorSchemeSelector = document.getElementById('colorSchemeSelector');
-    colorSchemeSelector.oninput = function () {
-      setColorScheme(this.value);
-    }
-
-    let functionSelector = document.getElementById('functionSelector');
-    functionSelector.oninput = function () {
-      let f = this.value;
-      setFString(f);
-      recalculatePlot();
-    }
-
-    let deleteButton = document.getElementById('deleteButton');
-    deleteButton.onclick = function () {
-      clearPts();
-    }
-  </script>
+  
+  <div id='program'>
+    <div id='fzBox'>
+      <div id='fzOptions'>
+        <span id='colorSchemeText'>Color scheme: </span>
+        <select name='colorSchemes' id='colorSchemeSelector'>
+          <option value="standard">standard</option>
+          <option value="monochrome">monochrome</option>
+          <option value="rainbow">rainbow</option>
+        </select>
+        <br>
+  
+        <span id='fzDef'>f(z) = </span>
+        <select name='f(z)' id='functionSelector'>
+          <option value="2z">2z</option>
+          <option value="iz">iz</option>
+          <option value="z^2">z^2</option>
+          <option value="sqrt(z)">sqrt(z)</option>
+          <option value="1/z">1/z</option>
+          <option value="log(z)">log(z)</option>
+          <option value="e^z">e^z</option>
+          <option value="conj(z)">conj(z)</option>
+        </select>
+        <br>
+        <button id='deleteButton'>Delete all points</button>
+  
+      </div>
+    </div>
+    <div id='canvas'></div>
+  
+    <script src="complexNumber.js"></script>
+    <script src="script.js"></script>
+    <script src="complexPlanePlot.js"></script>
+    <script>
+      let colorSchemeSelector = document.getElementById('colorSchemeSelector');
+      colorSchemeSelector.oninput = function () {
+        setColorScheme(this.value);
+      }
+  
+      let functionSelector = document.getElementById('functionSelector');
+      functionSelector.oninput = function () {
+        let f = this.value;
+        setFString(f);
+        recalculatePlot();
+      }
+  
+      let deleteButton = document.getElementById('deleteButton');
+      deleteButton.onclick = function () {
+        clearPts();
+      }
+    </script>
+  </div>
 
 </body>
 
