@@ -15,17 +15,17 @@ class ComplexPlanePlot {
     this.width = width;
     this.height = height;
     this.points = []
-    
+
     this.colorScheme = 'standard';
     this.axesColor = color(230, 100, 100);
-    this.ptColor = color(0,0,0);
+    this.ptColor = color(0, 0, 0);
   }
 
   // manages the color scheme.
   colorSchemeManager() {
     if (this.colorScheme == 'standard') {
       this.axesColor = color(230, 100, 100);
-      this.ptColor = color(0,0,0);
+      this.ptColor = color(0, 0, 0);
     }
     else if (this.colorScheme == 'monochrome') {
       this.axesColor = color(100, 100, 100);
@@ -34,7 +34,7 @@ class ComplexPlanePlot {
     else {
       //standard for now
       this.axesColor = color(230, 100, 100);
-      this.ptColor = color(0,0,0);
+      this.ptColor = color(0, 0, 0);
     }
   }
 
@@ -54,24 +54,23 @@ class ComplexPlanePlot {
     strokeWeight(1)
     rect(this.x, this.y, this.width, this.height);
 
-    
     this.drawAxes();
-    
+
     strokeWeight(5);
 
     // plot all the points
-    for(let i = 0; i < this.points.length; i ++) {
-      if(this.colorScheme == 'rainbow') {
+    for (let i = 0; i < this.points.length; i++) {
+      if (this.colorScheme == 'rainbow') {
         this.ptColor = this.colorWithKey(i);
       }
       this.plotPoint(this.points[i]);
     }
-    
+
     this.labelPlot();
   }
 
   labelPlot() {
-    textSize(windowWidth/50);
+    textSize(windowWidth / 50);
     fill(0);
     noStroke();
     textAlign(RIGHT, TOP);
@@ -100,7 +99,6 @@ class ComplexPlanePlot {
       line(bottomYAxis[0], bottomYAxis[1], topYAxis[0], topYAxis[1]);
     }
   }
-
 
   plotToCanvasCoordinates(z) {
     let ReStep = this.width / (this.maxReal - this.minReal);
@@ -154,7 +152,7 @@ class ComplexPlanePlot {
     let g = 0;
     let b = 0;
 
-    let k = (key % 255*5) + 1;
+    let k = (key % 255 * 5) + 1;
 
     // red (255, 0, 0) to yellow (255, 255, 0)
     if (k <= 255) {
@@ -164,29 +162,29 @@ class ComplexPlanePlot {
     }
 
     // yellow (255, 255, 0) to green (0, 255, 0)
-    else if(k <= 255*2) {
-      r = 255*2 - k;
+    else if (k <= 255 * 2) {
+      r = 255 * 2 - k;
       g = 255;
       b = 0;
     }
     // green (0, 255, 0) to blue (0, 0, 255)
-    else if (k <= 255*3) {
+    else if (k <= 255 * 3) {
       r = 0;
-      g = 255*3 - k;
-      b = k - 255*2;
+      g = 255 * 3 - k;
+      b = k - 255 * 2;
     }
     //blue (0, 0, 255) to violet (255, 0, 255)
-    else if (k <= 255*4) {
-      r = k - 255*3;
+    else if (k <= 255 * 4) {
+      r = k - 255 * 3;
       g = 0;
       b = 255;
     }
 
     //violet (255, 0, 255) to red (255, 0, 0)
-    else if (k <= 255*5) {
+    else if (k <= 255 * 5) {
       r = 255;
       g = 0;
-      b = 255*5 - k;
+      b = 255 * 5 - k;
     }
     return color(r, g, b);
   }

@@ -13,7 +13,7 @@ class ComplexNumber {
   Return a new instance of a complex number with that value*/
   plus() {
     let complexNumber = ComplexNumber.complexNumberFromArgs(arguments);
-      
+
     let a = this.a + complexNumber.a;
     let b = this.b + complexNumber.b;
     return new ComplexNumber(a, b);
@@ -26,19 +26,19 @@ class ComplexNumber {
     let w = numArray[1];
     return z.plus(w);
   }
-  
+
   /** Subtract a complex number from this instance of a complex number. 
   Return a new instance of a complex number with that value*/
   minus() {
     let complexNumber = ComplexNumber.complexNumberFromArgs(arguments);
-    
+
     let a = this.a - complexNumber.a;
     let b = this.b - complexNumber.b;
     return new ComplexNumber(a, b);
   }
 
   /** return z - w as a new ComplexNumber */
-  static subtract(){
+  static subtract() {
     let numArray = ComplexNumber.twoComplexNumbersFromArgs(arguments);
     let z = numArray[0];
     let w = numArray[1];
@@ -49,7 +49,7 @@ class ComplexNumber {
   Return a new instance of a complex number with that value*/
   times() {
     let complexNumber = ComplexNumber.complexNumberFromArgs(arguments);
-    
+
     let a1 = this.a * complexNumber.a;
     let a2 = -1 * this.b * complexNumber.b;
     let b1 = this.b * complexNumber.a;
@@ -87,17 +87,17 @@ class ComplexNumber {
   /** Returns this / complexNumber as a new instance (division) */
   over() {
     let complexNumber = ComplexNumber.complexNumberFromArgs(arguments);
-    
+
     let a = this.a;
     let b = this.b;
     let c = complexNumber.a;
     let d = complexNumber.b;
 
-    let denominator = c*c + d*d;
-    let realNumerator = a*c + b*d;
-    let imaginaryNumerator = b*c - a*d;
+    let denominator = c * c + d * d;
+    let realNumerator = a * c + b * d;
+    let imaginaryNumerator = b * c - a * d;
 
-    return new ComplexNumber(realNumerator/denominator, imaginaryNumerator/denominator);
+    return new ComplexNumber(realNumerator / denominator, imaginaryNumerator / denominator);
   }
   /** returns z/w */
   static divide() {
@@ -120,7 +120,7 @@ class ComplexNumber {
   modulus() {
     let a = this.a;
     let b = this.b;
-    return Math.sqrt(a*a + b*b);
+    return Math.sqrt(a * a + b * b);
   }
   static modulus() {
     let complexNumber = this.complexNumberFromArgs(arguments);
@@ -132,8 +132,8 @@ class ComplexNumber {
     let a = this.a;
     let b = this.b;
 
-    if(b !== 0) {
-      return 2*Math.atan((this.modulus()-a)/b);
+    if (b !== 0) {
+      return 2 * Math.atan((this.modulus() - a) / b);
     }
     else if (a > 0 && b == 0) {
       return 0;
@@ -145,7 +145,7 @@ class ComplexNumber {
       throw new Error('Error: Taking arg of 0');
     }
     return;
-    
+
   }
   static arg() {
     let complexNumber = this.complexNumberFromArgs(arguments);
@@ -168,20 +168,20 @@ class ComplexNumber {
     let a = this.a;
     let b = this.b;
     let e_a = Math.exp(a);
-    return new ComplexNumber(e_a*Math.cos(b), e_a*Math.sin(b));
+    return new ComplexNumber(e_a * Math.cos(b), e_a * Math.sin(b));
   }
-  static exp(){
+  static exp() {
     let complexNumber = this.complexNumberFromArgs(arguments);
     return complexNumber.exp();
   }
-  
+
   /** Raises this to the power of complexNumber. */
   pow() {
     let complexNumber = ComplexNumber.complexNumberFromArgs(arguments);
-    
+
     return (complexNumber.times(this.log())).exp();
   }
-  static pow(){
+  static pow() {
     let complexNumber = this.complexNumberFromArgs(arguments);
     return complexNumber.pow();
   }
@@ -201,10 +201,10 @@ class ComplexNumber {
   /** Takes in a list of arguments and returns the complex number */
   static complexNumberFromArgs(args) {
     let complexNumber;
-    if (args.length == 1){
+    if (args.length == 1) {
       complexNumber = args[0];
     }
-    else if (args.length == 2){
+    else if (args.length == 2) {
       complexNumber = new ComplexNumber(args[0], args[1]);
     }
     else {
@@ -234,4 +234,5 @@ class ComplexNumber {
   mobius(a, b, c, d) {
     return (this.times(a, 0).plus(b, 0)).over(this.times(c, 0).plus(d, 0));
   }
+
 }
