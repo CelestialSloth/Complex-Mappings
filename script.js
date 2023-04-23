@@ -48,6 +48,9 @@ function f(z) {
   else if (fString == 'z^2') {
     mappedZ = z.times(z);
   }
+  else if (fString == 'sqrt(z)') {
+    mappedZ = z.sqrt();
+  }
 
   mappedZ.color = z.color;
   return mappedZ;

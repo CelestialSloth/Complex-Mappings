@@ -20,12 +20,13 @@
         <option value="rainbow">rainbow</option>
       </select>
       <br>
-      
+
       <span id='fzDef'>f(z) = </span>
       <select name='f(z)' id='functionSelector'>
         <option value="2z">2z</option>
         <option value="iz">iz</option>
         <option value="z^2">z^2</option>
+        <option value="sqrt(z)">sqrt(z)</option>
         <option value="1/z">1/z</option>
         <option value="log(z)">log(z)</option>
         <option value="e^z">e^z</option>
@@ -33,7 +34,7 @@
       </select>
       <br>
       <button id='deleteButton'>Delete all points</button>
-      
+
     </div>
   </div>
   <div id='canvas'></div>
@@ -46,7 +47,7 @@
     colorSchemeSelector.oninput = function () {
       setColorScheme(this.value);
     }
-    
+
     let functionSelector = document.getElementById('functionSelector');
     functionSelector.oninput = function () {
       let f = this.value;
