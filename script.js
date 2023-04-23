@@ -104,7 +104,7 @@ function clearPts() {
   ptsPlot.points = [];
   mappedPtsPlot.points = [];
 }
-function setup() {
+function setup() {  
   let canvas = createCanvas(canvasWidth, canvasHeight);
   canvas.parent('program');
 
