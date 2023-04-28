@@ -38,9 +38,7 @@ class ComplexPlanePlot {
     }
   }
 
-  // reset function
-  // TODO: make some parameters optional?
-  resetPoints(minReal, maxReal, minIm, maxIm, points) {
+  resetPlot(minReal, maxReal, minIm, maxIm, points) {
     this.minReal = minReal;
     this.maxReal = maxReal;
     this.minIm = minIm;
@@ -70,17 +68,17 @@ class ComplexPlanePlot {
   }
 
   labelPlot() {
-    textSize(windowWidth / 50);
+    textSize(windowWidth / 70);
     fill(0);
     noStroke();
     textAlign(RIGHT, TOP);
-    text(this.maxIm + "i ", this.x, this.y);
+    text(this.maxIm.toPrecision(3) + "i ", this.x, this.y);
     textAlign(RIGHT, BOTTOM);
-    text(this.minIm + "i ", this.x, this.y + this.height);
+    text(this.minIm.toPrecision(3) + "i ", this.x, this.y + this.height);
     textAlign(LEFT, TOP);
-    text(this.minReal, this.x, this.y + this.height);
+    text(this.minReal.toPrecision(3), this.x, this.y + this.height);
     textAlign(RIGHT, TOP);
-    text(this.maxReal, this.x + this.width, this.y + this.height);
+    text(this.maxReal.toPrecision(3), this.x + this.width, this.y + this.height);
   }
 
   drawAxes() {
@@ -187,5 +185,23 @@ class ComplexPlanePlot {
       b = 255 * 5 - k;
     }
     return color(r, g, b);
+  }
+
+  fitToPoints() {
+    if(this.points.length == 0) { return; }
+    let z0 = this.points[0];
+    let minReVal = z0.a;
+    let maxReVal = z0.a;
+    let minImVal = z0.b;
+    let maxImVal = z0.b;
+
+    for (let z of this.points) {
+      if (z.a < minReVal) { minReVal = z.a; }
+      if (z.a > maxReVal) { maxReVal = z.a; }
+      if (z.b < minImVal) { minImVal = z.b; }
+      if (z.b > maxImVal) { maxImVal = z.b; }
+    }
+
+    this.resetPlot(minReVal, maxReVal, minImVal, maxImVal, this.points);
   }
 }

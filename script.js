@@ -90,13 +90,11 @@ function windowResized() {
 // weird at start
 function recalculatePlot() {
   let mappedPts = [];
-  let pts = ptsPlot.points;
-  for (pt of pts) {
+  for (pt of ptsPlot.points) {
     mappedPts.push(f(pt));
   }
 
-  ptsPlot.resetPoints(minRe, maxRe, minIm, maxIm, pts);
-  mappedPtsPlot.resetPoints(minRe, maxRe, minIm, maxIm, mappedPts);
+  mappedPtsPlot.points = mappedPts;
 }
 
 // delete all the points
@@ -104,6 +102,11 @@ function clearPts() {
   ptsPlot.points = [];
   mappedPtsPlot.points = [];
 }
+
+function fitToPts() {
+  mappedPtsPlot.fitToPoints();
+}
+
 function setup() {  
   let canvas = createCanvas(canvasWidth, canvasHeight);
   canvas.parent('program');

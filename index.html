@@ -43,7 +43,8 @@
           <option value="conj(z)">conj(z)</option>
         </select>
         <br>
-        <button id='deleteButton'>Delete all points</button>
+        <button id='deleteButton' onclick='clearPts();'>Delete all points</button>
+        <button id='fitToPtsButton' onclick='fitToPts();'>Fit to Points</button>
   
       </div>
     </div>
@@ -64,11 +65,6 @@
         let f = this.value;
         setFString(f);
         recalculatePlot();
-      }
-  
-      let deleteButton = document.getElementById('deleteButton');
-      deleteButton.onclick = function () {
-        clearPts();
       }
     </script>
   </div>
