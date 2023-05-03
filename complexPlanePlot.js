@@ -141,7 +141,7 @@ class ComplexPlanePlot {
 
   // returns whether a given point on the canvas is inside this plot
   inPlot(x, y) {
-    return x > this.x && x < this.x + this.width && y > this.y && y < this.y + this.height;
+    return x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height;
   }
 
   // enter consecutive keys, get rainbow colors

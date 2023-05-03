@@ -230,9 +230,9 @@ class ComplexNumber {
     return [z, w];
   }
 
-  /** Takes in four real numbers and performs the corresponding mobius transformation */
+  /** Takes in four numbers and performs the corresponding mobius transformation */
   mobius(a, b, c, d) {
-    return (this.times(a, 0).plus(b, 0)).over(this.times(c, 0).plus(d, 0));
+    return (this.times(a).plus(b)).over(this.times(c).plus(d));
   }
 
 }
