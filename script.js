@@ -111,6 +111,8 @@ function setup() {
   let canvas = createCanvas(canvasWidth, canvasHeight);
   canvas.parent('program');
 
+  EquationParser.parseEquation('28*i+(2-77)+sqrt(z)*7');
+
   let w = new ComplexNumber(0, 0);
 
   ptsPlot = new ComplexPlanePlot(minRe, maxRe, minIm, maxIm, canvasWidth / 12, canvasHeight / 10, canvasWidth / 3, canvasWidth / 3);
