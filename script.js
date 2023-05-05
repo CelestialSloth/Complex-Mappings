@@ -7,15 +7,32 @@ let maxIm = 4;
 let minRe = -4;
 let minIm = -4;
 
-//TODO: figure out square root weirdness (static seems diff from nonstatic)
-//TODO: test more thoroughly
 let ptsPlot;
 let mappedPtsPlot;
 
-let fString = '2z';
-function setFString(fStr) {
-  fString = fStr;
+let fPostfix = ['z'];
+
+/** TODO
+* give user error if they entered a weird equation, and don't shut down
+* make it so "2i" actually works (shouldn't be too hard)
+* make it so "2z" actually works (also shouldn't be too hard)
+* allow user to manually set min/max for plots
+*/
+
+function setFPostfix(fInfixStr) {
+  fTokenArray = EquationParser.tokenArray(fInfixStr);
+  fPostfix = EquationParser.infixToPostfix(fTokenArray);
+  recalculatePlot();
 }
+
+function f(z) {
+  return EquationParser.computePostfix(fPostfix, z);
+}
+
+// let fString = '2z';
+// function setFString(fStr) {
+//   fString = fStr;
+// }
 
 //change the color scheme
 function setColorScheme(newScheme) {
@@ -25,7 +42,7 @@ function setColorScheme(newScheme) {
   mappedPtsPlot.colorSchemeManager();
 }
 
-function f(z) {
+/*function f(z) {
   let mappedZ = z;
   if (fString == 'iz') {
     mappedZ = z.times(0, 1);
@@ -54,7 +71,7 @@ function f(z) {
 
   mappedZ.color = z.color;
   return mappedZ;
-}
+}*/
 
 function drawArrow() {
   stroke(0);
@@ -110,10 +127,6 @@ function fitToPts() {
 function setup() {  
   let canvas = createCanvas(canvasWidth, canvasHeight);
   canvas.parent('program');
-
-  EquationParser.parseEquation('-3^2-i*7+z');
-
-  let w = new ComplexNumber(0, 0);
 
   ptsPlot = new ComplexPlanePlot(minRe, maxRe, minIm, maxIm, canvasWidth / 12, canvasHeight / 10, canvasWidth / 3, canvasWidth / 3);
 

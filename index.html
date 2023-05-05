@@ -31,7 +31,7 @@
         </select>
         <br>
   
-        <span id='fzDef'>f(z) = </span>
+        <!-- <span id='fzDef'>f(z) = </span>
         <select name='f(z)' id='functionSelector'>
           <option value="2z">2z</option>
           <option value="iz">iz</option>
@@ -41,7 +41,10 @@
           <option value="log(z)">log(z)</option>
           <option value="e^z">e^z</option>
           <option value="conj(z)">conj(z)</option>
-        </select>
+        </select> -->
+        <label for="f(z)">f(z)=</label>
+        <input type="text" id="functionInput" name="fText">
+        <button id='plotItButton'>Plot it!</button>
         <br>
         <button id='deleteButton' onclick='clearPts();'>Delete all points</button>
         <button id='fitToPtsButton' onclick='fitToPts();'>Fit to Points</button>
@@ -59,13 +62,20 @@
       colorSchemeSelector.oninput = function () {
         setColorScheme(this.value);
       }
-  
-      let functionSelector = document.getElementById('functionSelector');
-      functionSelector.oninput = function () {
-        let f = this.value;
-        setFString(f);
-        recalculatePlot();
+
+      let plotItButton = document.getElementById('plotItButton');
+      let functionInput = document.getElementById('functionInput');
+      plotItButton.onclick = function() {
+        setFPostfix(functionInput.value);
       }
+      
+  
+      // let functionSelector = document.getElementById('functionSelector');
+      // functionSelector.oninput = function () {
+      //   let f = this.value;
+      //   setFString(f);
+      //   recalculatePlot();
+      // }
     </script>
   </div>
 
