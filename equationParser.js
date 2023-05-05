@@ -9,14 +9,19 @@ class EquationParser {
   static functions = ['sqrt', 'conj', 'log', 'arg', 'mod'];
   
   static parseEquation(equation) {
+    print("Equation: " + equation);
     //break equation into array of parts
     let tokenArray = EquationParser.tokenArray(equation);
-  
+    print("Tokens: " + EquationParser.printArr(tokenArray));
+    
     // execute shuntingyard
-    let infix = EquationParser.infixToPostfix(tokenArray)
-    print(infix);
+    let postfix = EquationParser.infixToPostfix(tokenArray)
+    print("Postfix: " + EquationParser.printArr(postfix))
     
     // compute in postfix
+    let computed = EquationParser.computePostfix(postfix, new ComplexNumber(1, 0));
+    print("Computed: " + computed.toString());
+    
   }
 
   // Input: string representing equation. Output: array with each token
@@ -34,17 +39,60 @@ class EquationParser {
       
       let currentChar = equation.charAt(equationIndex);
       
+      // determine if this is a unary minus
+      if(currentChar === '-') {
+        let unaryMinus = false;
+        
+        // determine if it's a unary minus or an operator
+        // if it's at the very beginning of the equation
+        if (equationArray.length == 0) {
+          unaryMinus = true;
+        }
+        // if it's right after (
+        else if(equationArray.slice(-1)[0] === '('){
+          unaryMinus = true;
+        }
+
+        // if it is a unary minus, mult by -1. If not, it's a regular operator
+        if(unaryMinus) {
+          equationArray.push(new ComplexNumber(-1, 0));
+          equationArray.push('*');
+        }
+        else {
+          equationArray.push(currentChar);
+        }
+        equationIndex ++;
+      }
       // if a number, find end of number
-      if(digits.includes(currentChar)) {
-        let number = ''
+      else if(digits.includes(currentChar)) {
+        let number = ''        
         while(equationIndex < equation.length && digits.includes(currentChar)) {
           number += currentChar;
           equationIndex ++;
           currentChar = equation.charAt(equationIndex);
         }
-        equationArray.push(number);
+        equationArray.push(new ComplexNumber(Number(number), 0));
       }
-      else if (chars.includes(currentChar) || operators.includes(currentChar) || paren.includes(currentChar)) {
+      // z, i, e, ...
+      else if (chars.includes(currentChar)) {
+        let val;
+        switch(currentChar){
+          case 'z':
+            val = currentChar;
+            break;
+          case 'e':
+            val = new ComplexNumber(2.71828182845904523536, 0);
+            break;
+          case 'i':
+            val = new ComplexNumber(0, 1);
+            break;
+          default:
+            throw new Error('This is not a valid equation character: ' + currentChar);
+        }
+        equationArray.push(val);
+        equationIndex ++;
+      }
+      else if (operators.includes(currentChar) || paren.includes(currentChar)) {
         equationArray.push(currentChar);
         equationIndex ++;
       }
@@ -52,7 +100,6 @@ class EquationParser {
       else {
         let word = '';
         while(equationIndex < equation.length && /^[a-z]/i.test(currentChar)) {
-          print(currentChar + ' is a letter');
           word += currentChar;
           equationIndex ++;
           currentChar = equation.charAt(equationIndex);
@@ -68,7 +115,6 @@ class EquationParser {
       }
       
     }
-    print(equationArray);
     return equationArray;
   }
 
@@ -78,103 +124,223 @@ class EquationParser {
   static infixToPostfix(tokenArray) {
     let outputQueue = [];
     let operatorStack = [];
-    
-    let digits = EquationParser.digits;
-    let chars = EquationParser.chars;
-    let operators = EquationParser.operators;
+
     let functions = EquationParser.functions;
-
-    // while there are tokens to be read
-    for(let token of tokenArray) {
-
-      // if the token is a number, put it in the output queue
-      if (isFinite(token) || chars.includes(token)) {
+    let operators = EquationParser.operators;
+    
+    // while there are tokens to be read:
+    for (let token of tokenArray) {
+      // token is a number
+      if(token instanceof ComplexNumber || token == 'z') {
+        // put it into the output queue
         outputQueue.push(token);
       }
-      // if it's a function, push onto operator stack
-      else if (functions.includes(token)) {
+      // token is a function
+      else if(functions.includes(token)) {
+        // push it onto the operator stack
         operatorStack.push(token);
       }
-      //if it's an operator
-      else if (operators.includes(token)) {
-        // while (there is an operator o2 at top of opStack which is not a left parenthesis), and (o2 prec > token or (o1 prec == o2 prec and o1 is left-assoc))
-        let o2;
-        if (operatorStack.length > 0) {o2 = operatorStack.slice(-1)[0];}
-        while (operatorStack.length > 0 && operators.includes(o2) && o2 != '(' && (EquationParser.precedence(o2) > EquationParser.precedence(token) || (EquationParser.precedence(o2) == EquationParser.precedence(token) && EquationParser.assocLeft(token)))) {
+      // token is an operator o1
+      else if(operators.includes(token)) {
+        while(EquationParser.opWhileCondition(operatorStack, token)) {
+          // pop o2 from the operator stack into the output queue
           outputQueue.push(operatorStack.pop());
-          if (operatorStack.length > 0) {o2 = operatorStack.slice(-1)[0];}
         }
+        // push o1 (token) onto the operator stack
         operatorStack.push(token);
       }
-      //if it's a comma
-      else if(token == ',') {
-        // while the operator at the top of the operator stack is not a left parenthesis
-        while(operatorStack.length > 0 && operatorStack.slice(-1)[0] != '(') {
-          outputQueue.push(operatorStack.pop());
-        }
-      }
-      //if it's a left parenthesis "("
-      else if(token == '(') {
+      // token is a left parenthesis '('
+      else if(token === '(') {
         //push it onto the operator stack
         operatorStack.push(token);
       }
-        // if it's a right parenthesis ")"
-      else if(token == ')') {
-        // while the operator at the top of the operator stack is not a left parenthesis
-        while(operatorStack.length > 0 && operatorStack.slice(-1)[0] != '(') {
-          //TODO: assert operatorStack is not empty (already did that?)
-          //pop the operator into the output queue
+      // token is a right parenthesis ')'
+      else if(token === ')') {
+        // while the operator at top of op stack is not '('
+        while(operatorStack.length == 0 || operatorStack.slice(-1)[0] !== '(') {
+          // assert the operator stack is not empty
+          if(operatorStack.length == 0) {
+            throw new Error("Mismatched parentheses!");
+          }
+
+          // pop the operator from the operator stack into the output queue
           outputQueue.push(operatorStack.pop());
-        }
-        //assert there is a left parenthesis at the top of the operator stack
-        // pop the left parenthesis from the operator stack and discard it
-        if(operatorStack.length > 0 && operatorStack.slice(-1)[0] == '(') {
-          operatorStack.pop();
-        }
-        else {
-          print("Problem! There is not a left parenthesis at the top of the operatorStack!");
-          return;
         }
 
-        //if there is a function token at the top of the operator stack, then pop the function from the operator stack into the output queue
+        //assert there is a left parenthesis at the top of the operator stack (already done...?)
+        //pop the left parenthesis from op stack, discard
+        operatorStack.pop();
+
+        //if there is a function token at the top of the operator stack
         if(operatorStack.length > 0 && functions.includes(operatorStack.slice(-1)[0])) {
+          //pop the function from the op stack --> output queue
           outputQueue.push(operatorStack.pop());
         }
+        
       }
     }
-
+  
+    // pop the remaining items from the operator stack into the output queue
     // while there are tokens on the operator stack
-    for (let operator of operatorStack) {
-      // assert operator isn't left parenthesis
-      if(operator == '(') {
-        print("mismatched parentheses!");
-        return;
+    while(operatorStack.length > 0) {
+      let topOfOpStack = operatorStack.pop();
+      
+      // assert operator at top of stack is not a left parenthesis
+      if(topOfOpStack === '(') {
+        throw new Error("Extra left parenthesis!");
       }
-      // pop the operator onto the output queue
-      outputQueue.push(operator);
+      
+      //pop from opStack --> outputQueue
+      outputQueue.push(topOfOpStack);
     }
 
     return outputQueue;
+  
   }
 
+  // compute a complex postfix equation, inputting some complex number for z
+  // https://www.geeksforgeeks.org/evaluation-of-postfix-expression/
+  static computePostfix(postfix, z) {
+    let chars = EquationParser.chars;
+    let operators = EquationParser.operators;
+    let functions = EquationParser.functions;
+    
+    let stack = [];
+    
+    for (let token of postfix) {
+      // if it's a number, push it into the stack
+      if (token instanceof ComplexNumber) {
+        stack.push(token);
+      }
+      else if (token == 'z') {
+        stack.push(z);
+      }
+      // if it's an operator, pop operands for the operator from the stack. Evaluate, and push the result to the stack
+      else if(operators.includes(token)) {
+        let n2 = stack.pop();
+        let n1 = stack.pop();
+        stack.push(EquationParser.evalOp(n1, n2, token));
+      }
+      else if(functions.includes(token)) {
+        let n = stack.pop();
+        stack.push(EquationParser.evalFunc(n, token));
+      }
+    }
+    if (stack.length != 1) {
+      throw new Error("The stack should only have one object in it, but instead it's this: " + EquationParser.printArr(stack));
+    }
+    return stack[0];
+  }
+  
   // return an integer precedence level
   static precedence(operator) {
-    if (operator == '^') { return 4; }
-    if (operator == '*') { return 3; }
-    if (operator == '/') { return 3; }
-    if (operator == '+') { return 2; }
-    if (operator == '-') { return 2; }
-    else { print("Not a valid operator: " + operator); }
+    switch(operator) {
+      case '^':
+        return 4;
+      case '*':
+        return 3;
+      case '/':
+        return 3;
+      case '+':
+        return 2;
+      case '-':
+        return 2;
+      default:
+        throw new Error("Not a valid operator: " + operator);
+    }
   }
 
   // return true if the operator is left associative
   static assocLeft(operator) {
-    if (operator == '^') { return false; }
-    if (operator == '*') { return true; }
-    if (operator == '/') { return true; }
-    if (operator == '+') { return true; }
-    if (operator == '-') { return true; }
-    else { print("Not a valid operator"); }
+    switch(operator) {
+      case '^':
+        return false;
+      case '*':
+        return true;
+      case '/':
+        return true;
+      case '+':
+        return true;
+      case '-':
+        return true;
+      default:
+        throw new Error("Not a valid operator: " + operator);
+    }
+  }
+
+  // performs complex operation on complex numbers n1 and n2
+  static evalOp(n1, n2, operator) {
+    switch(operator) {
+      case '^':
+        return n1.pow(n2);
+      case '*':
+        return n1.times(n2);
+      case '/':
+        return n1.over(n2);
+      case '+':
+        return n1.plus(n2);
+      case '-':
+        return n1.minus(n2);
+      default:
+        throw new Error("Not a valid operator: " + operator);
+    }
+  }
+
+  static evalFunc(n, f) {
+    //'sqrt', 'conj', 'log', 'arg', 'mod'
+    switch(f) {
+      case 'sqrt':
+        return n.sqrt();
+      case 'conj':
+        return n.conjugate();
+      case 'log':
+        return n.log();
+      case 'arg':
+        return n.arg();
+      case 'mod':
+        return n.modulus();
+      default:
+        throw new Error("invalid function " + f);
+    }
+  }
+
+  static printArr(arr) {
+    let str = '';
+    for (let obj of arr) {
+      if (obj instanceof ComplexNumber) {
+        str = str.concat(obj.toString());
+      }
+      else {
+        str = str.concat(obj);
+      }
+      str = str.concat(', ');
+    }
+    return str;
+  }
+
+
+  // Deals with the long while condition in the shuntingyard algorithm. returns T/F.
+  static opWhileCondition(opStack, o1) {
+    let operators = EquationParser.operators;
+    // return true if all of the following are met
+
+    // a) there is an operator o2 at top of operator stack
+    if(opStack.length === 0) { return false; }
+    let o2 = opStack.slice(-1)[0];
+    if(!operators.includes(o2)) { return false; }
+    
+    // b) o2 != '('
+    if (o2 === '(') { return false; }
+
+    // c) AND one of the following
+    // c1) o2 precedence > o1 precedence
+    let condition1 = EquationParser.precedence(o2) > EquationParser.precedence(o1);
+    // c2) o1 precedence == o2 precedence AND o1 is left-assoc
+    let condition2 = EquationParser.precedence(o1) === EquationParser.precedence(o2) && EquationParser.assocLeft(o1)
+
+    if (condition1 || condition2) { return true; }
+
+    return false;
   }
   
 }

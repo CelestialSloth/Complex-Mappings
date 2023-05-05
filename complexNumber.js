@@ -235,4 +235,7 @@ class ComplexNumber {
     return (this.times(a).plus(b)).over(this.times(c).plus(d));
   }
 
+  toString() {
+    return str(this.a) + " + " + str(this.b) + "i";
+  }
 }

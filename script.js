@@ -111,7 +111,7 @@ function setup() {
   let canvas = createCanvas(canvasWidth, canvasHeight);
   canvas.parent('program');
 
-  EquationParser.parseEquation('28*i+(2-77)+sqrt(z)*7');
+  EquationParser.parseEquation('-3^2-i*7+z');
 
   let w = new ComplexNumber(0, 0);
 
