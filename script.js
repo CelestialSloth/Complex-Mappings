@@ -13,6 +13,7 @@ let mappedPtsPlot;
 let fPostfix = ['z'];
 
 /** TODO
+* debug mod issue
 * give user error if they entered a weird equation, and don't shut down
 * make it so "2i" actually works (shouldn't be too hard)
 * make it so "2z" actually works (also shouldn't be too hard)

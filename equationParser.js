@@ -75,6 +75,14 @@ class EquationParser {
       }
       // z, i, e, ...
       else if (chars.includes(currentChar)) {
+        // check what's before it and if there should be multiplication (eg, if you have 2z (1-z)i)
+        let previousEntry = null;
+        if(equationArray.length > 0) { previousEntry = equationArray.slice(-1)[0]; }
+        if(previousEntry instanceof ComplexNumber || previousEntry == ')'){
+          equationArray.push('*');
+        }
+
+        // now actually input the char into the array
         let val;
         switch(currentChar){
           case 'z':
