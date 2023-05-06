@@ -316,9 +316,9 @@ class EquationParser {
       case 'log':
         return n.log();
       case 'arg':
-        return n.arg();
+        return new ComplexNumber(n.arg(), 0);
       case 'mod':
-        return n.modulus();
+        return new ComplexNumber(n.modulus(), 0);
       default:
         throw new Error("invalid function " + f);
     }

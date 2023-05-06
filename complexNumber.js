@@ -123,7 +123,7 @@ class ComplexNumber {
     return Math.sqrt(a * a + b * b);
   }
   static modulus() {
-    let complexNumber = this.complexNumberFromArgs(arguments);
+    let complexNumber = ComplexNumber.complexNumberFromArgs(arguments);
     return complexNumber.modulus();
   }
 
@@ -159,7 +159,7 @@ class ComplexNumber {
     return new ComplexNumber(ln_mod, arg);
   }
   static log() {
-    let complexNumber = this.complexNumberFromArgs(arguments);
+    let complexNumber = ComplexNumber.complexNumberFromArgs(arguments);
     return complexNumber.log();
   }
 
@@ -171,7 +171,7 @@ class ComplexNumber {
     return new ComplexNumber(e_a * Math.cos(b), e_a * Math.sin(b));
   }
   static exp() {
-    let complexNumber = this.complexNumberFromArgs(arguments);
+    let complexNumber = ComplexNumber.complexNumberFromArgs(arguments);
     return complexNumber.exp();
   }
 
@@ -182,7 +182,7 @@ class ComplexNumber {
     return (complexNumber.times(this.log())).exp();
   }
   static pow() {
-    let complexNumber = this.complexNumberFromArgs(arguments);
+    let complexNumber = ComplexNumber.complexNumberFromArgs(arguments);
     return complexNumber.pow();
   }
 
@@ -194,7 +194,7 @@ class ComplexNumber {
     return exp_i_half_theta.times(new ComplexNumber(root_r, 0));
   }
   static sqrt() {
-    let complexNumber = this.complexNumberFromArgs(arguments);
+    let complexNumber = ComplexNumber.complexNumberFromArgs(arguments);
     return complexNumber.sqrt();
   }
 
