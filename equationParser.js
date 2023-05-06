@@ -78,7 +78,7 @@ class EquationParser {
         // check what's before it and if there should be multiplication (eg, if you have 2z (1-z)i)
         let previousEntry = null;
         if(equationArray.length > 0) { previousEntry = equationArray.slice(-1)[0]; }
-        if(previousEntry instanceof ComplexNumber || previousEntry == ')'){
+        if(previousEntry instanceof ComplexNumber || previousEntry == ')' || chars.includes(previousEntry)){
           equationArray.push('*');
         }
 
@@ -100,6 +100,18 @@ class EquationParser {
         equationArray.push(val);
         equationIndex ++;
       }
+      // open paren
+      else if (currentChar == '('){
+        // check what's before it and if there should be multiplication (eg, if you have 2z(i+3) )
+        let previousEntry = null;
+        if(equationArray.length > 0) { previousEntry = equationArray.slice(-1)[0]; }
+        if(previousEntry instanceof ComplexNumber || previousEntry == ')' || chars.includes(previousEntry)){
+          equationArray.push('*');
+        }
+        equationArray.push(currentChar);
+        equationIndex ++;
+      }
+      //other operators and parentheses
       else if (operators.includes(currentChar) || paren.includes(currentChar)) {
         equationArray.push(currentChar);
         equationIndex ++;
