@@ -7,7 +7,12 @@
   <title>Complex Mappings</title>
   <link href="style.css" rel="stylesheet" type="text/css" />
   <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
-  
+
+  <!--  bootstrap stuff, can delete if not using-->
+  <!--  use this tutorial for popover: https://www.w3schools.com/bootstrap/bootstrap_popover.asp-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -31,20 +36,8 @@
           <option value="rainbow">rainbow</option>
         </select>
         <br>
-  
-        <!-- <span id='fzDef'>f(z) = </span>
-        <select name='f(z)' id='functionSelector'>
-          <option value="2z">2z</option>
-          <option value="iz">iz</option>
-          <option value="z^2">z^2</option>
-          <option value="sqrt(z)">sqrt(z)</option>
-          <option value="1/z">1/z</option>
-          <option value="log(z)">log(z)</option>
-          <option value="e^z">e^z</option>
-          <option value="conj(z)">conj(z)</option>
-        </select> -->
         <label for="f(z)">f(z)=</label>
-        <input type="text" id="functionInput" name="fText">
+        <input type="text" id="functionInput" data-toggle="popover", data-trigger="focus">
         <button id='plotItButton'>Plot it!</button>
         <br>
         <button id='deleteButton' onclick='clearPts();'>Delete all points</button>
@@ -53,6 +46,9 @@
       </div>
     </div>
     <div id='canvas'></div>
+    <script>
+  
+  </script>
   
     <script src="complexNumber.js"></script>
     <script src="script.js"></script>
@@ -67,16 +63,19 @@
       let plotItButton = document.getElementById('plotItButton');
       let functionInput = document.getElementById('functionInput');
       plotItButton.onclick = function() {
-        setFPostfix(functionInput.value);
+        let error = setFPostfix(functionInput.value);
+
+        // add a popover and change styling if there's an error
+        if(error) {
+          functionInput.setAttribute("title", error);
+          functionInput.setAttribute("style", "border-color:#ff0000; background-color:#ffdddd;");
+          $(functionInput).popover();
+        }
+        else {
+          functionInput.removeAttribute("style");
+          $(functionInput).popover('destroy');
+        }
       }
-      
-  
-      // let functionSelector = document.getElementById('functionSelector');
-      // functionSelector.oninput = function () {
-      //   let f = this.value;
-      //   setFString(f);
-      //   recalculatePlot();
-      // }
     </script>
   </div>
 

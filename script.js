@@ -33,8 +33,8 @@ function setFPostfix(fInfixStr) {
     recalculatePlot();
   }
   catch (error) {
-    window.alert(error);
     fPostfix = oldPostfix;
+    return error;
   }
   
 }
