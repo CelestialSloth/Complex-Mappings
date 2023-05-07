@@ -21,9 +21,22 @@ let fPostfix = ['z'];
 */
 
 function setFPostfix(fInfixStr) {
-  fTokenArray = EquationParser.tokenArray(fInfixStr);
-  fPostfix = EquationParser.infixToPostfix(fTokenArray);
-  recalculatePlot();
+  let oldPostfix = fPostfix;
+  
+  try {
+    let fTokenArray = EquationParser.tokenArray(fInfixStr);
+    fPostfix = EquationParser.infixToPostfix(fTokenArray);
+
+    // test a value
+    EquationParser.computePostfix(fPostfix, new ComplexNumber(1, 0));
+    
+    recalculatePlot();
+  }
+  catch (error) {
+    window.alert(error);
+    fPostfix = oldPostfix;
+  }
+  
 }
 
 function f(z) {

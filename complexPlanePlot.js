@@ -68,7 +68,7 @@ class ComplexPlanePlot {
   }
 
   labelPlot() {
-    textSize(windowWidth / 70);
+    textSize(canvasWidth / 40);
     fill(0);
     noStroke();
     textAlign(RIGHT, TOP);

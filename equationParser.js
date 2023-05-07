@@ -130,7 +130,7 @@ class EquationParser {
           //equationIndex ++;
         }
         else {
-          throw (word + " is not a function!");
+          throw new Error(word + " is not a function!");
         }
       }
       
@@ -147,6 +147,10 @@ class EquationParser {
 
     let functions = EquationParser.functions;
     let operators = EquationParser.operators;
+
+    if(tokenArray.length == 0) {
+      throw new Error("Empty equation!");
+    }
     
     // while there are tokens to be read:
     for (let token of tokenArray) {
@@ -197,6 +201,9 @@ class EquationParser {
           outputQueue.push(operatorStack.pop());
         }
         
+      }
+      else {
+        throw new Error("Unrecognized token " + token);
       }
     }
   
