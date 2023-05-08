@@ -5,7 +5,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>Complex Mappings</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
   <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
 
   <!--  bootstrap stuff, can delete if not using-->
@@ -13,6 +12,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <!--  Personal CSS-->
+  <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -37,7 +39,7 @@
         </select>
         <br>
         <label for="f(z)">f(z)=</label>
-        <input type="text" id="functionInput" data-toggle="popover", data-trigger="focus">
+        <input type="text" id="functionInput" data-toggle="popover" title="Invalid equation" data-placement="top">
         <button id='plotItButton'>Plot it!</button>
         <br>
         <button id='deleteButton' onclick='clearPts();'>Delete all points</button>
@@ -46,15 +48,15 @@
       </div>
     </div>
     <div id='canvas'></div>
-    <script>
-  
-  </script>
   
     <script src="complexNumber.js"></script>
     <script src="script.js"></script>
     <script src="complexPlanePlot.js"></script>
     <script src="equationParser.js"></script>
     <script>
+      //TODO: buggy popover
+
+      
       let colorSchemeSelector = document.getElementById('colorSchemeSelector');
       colorSchemeSelector.oninput = function () {
         setColorScheme(this.value);
@@ -67,13 +69,13 @@
 
         // add a popover and change styling if there's an error
         if(error) {
-          functionInput.setAttribute("title", error);
+          $(functionInput).popover('show').off('click');
+
           functionInput.setAttribute("style", "border-color:#ff0000; background-color:#ffdddd;");
-          $(functionInput).popover();
         }
         else {
-          functionInput.removeAttribute("style");
           $(functionInput).popover('destroy');
+          functionInput.removeAttribute("style");
         }
       }
     </script>

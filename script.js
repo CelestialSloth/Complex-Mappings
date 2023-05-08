@@ -12,14 +12,6 @@ let mappedPtsPlot;
 
 let fPostfix = ['z'];
 
-/** TODO
-* debug mod issue
-* give user error if they entered a weird equation, and don't shut down
-* make it so "2i" actually works (shouldn't be too hard)
-* make it so "2z" actually works (also shouldn't be too hard)
-* allow user to manually set min/max for plots
-*/
-
 function setFPostfix(fInfixStr) {
   let oldPostfix = fPostfix;
   
@@ -43,11 +35,6 @@ function f(z) {
   return EquationParser.computePostfix(fPostfix, z);
 }
 
-// let fString = '2z';
-// function setFString(fStr) {
-//   fString = fStr;
-// }
-
 //change the color scheme
 function setColorScheme(newScheme) {
   ptsPlot.colorScheme = newScheme;
@@ -55,37 +42,6 @@ function setColorScheme(newScheme) {
   ptsPlot.colorSchemeManager();
   mappedPtsPlot.colorSchemeManager();
 }
-
-/*function f(z) {
-  let mappedZ = z;
-  if (fString == 'iz') {
-    mappedZ = z.times(0, 1);
-  }
-  else if (fString == '1/z') {
-    mappedZ = (new ComplexNumber(1, 0)).over(z);
-  }
-  else if (fString == '2z') {
-    mappedZ = z.times(2, 0);
-  }
-  else if (fString == 'log(z)') {
-    mappedZ = z.log();
-  }
-  else if (fString == 'e^z') {
-    mappedZ = z.exp();
-  }
-  else if (fString == 'conj(z)') {
-    mappedZ = z.conjugate();
-  }
-  else if (fString == 'z^2') {
-    mappedZ = z.times(z);
-  }
-  else if (fString == 'sqrt(z)') {
-    mappedZ = z.sqrt();
-  }
-
-  mappedZ.color = z.color;
-  return mappedZ;
-}*/
 
 function drawArrow() {
   stroke(0);
@@ -107,11 +63,12 @@ function windowResized() {
   canvasWidth = canvasDiv.offsetWidth;
   canvasHeight = canvasWidth * 0.5;
   ptsPlot.width = canvasWidth / 3;
+  ptsPlot.height = ptsPlot.width;
   ptsPlot.x = canvasWidth / 12;
   ptsPlot.y = canvasHeight / 10;
   ptsPlot.height = canvasWidth / 3;
   mappedPtsPlot.width = canvasWidth / 3;
-  mappedPtsPlot.height = canvasWidth / 3;
+  mappedPtsPlot.height = mappedPtsPlot.width;
   mappedPtsPlot.x = canvasWidth / 12 * 7;
   mappedPtsPlot.y = canvasHeight / 10;
   resizeCanvas(canvasWidth, canvasHeight);
