@@ -30,15 +30,41 @@ select {
   margin-bottom: 20px;
 }
 
-#fzBox{
+.fzBox{
   align-self: center;
   background-color: gray;
   padding: 0.25em;
 }
-#fzOptions{
+.fzOptions{
   background-color: white;
-  padding: 0.25em;
-  margin: 1em;
+  padding: 0.5em;
+  margin: 0.5em;
+}
+
+.plotBoundInput {
+  width: 8%;
+  min-width: 50px;
+  max-width: 150px;
+}
+table, th, td {
+  background-color: white;
+  font-weight: normal;
+  text-align: center;
+}
+table {
+  width: 300px;
+  max-width: 90%;
+  margin: auto;
+}
+.float-container {
+  display: inline-block;
+  width: 100%;
+}
+.float-child {
+  width: 48%;
+  float: left;
+  margin: 1%;
+  background-color: white;
 }
 
 button{
@@ -55,4 +81,8 @@ button{
 }
 button:hover {
     background-color:#ababab;
+}
+#rescaleInputPlotButton, #rescaleOutputPlotButton {
+  width: 50%;
+  margin: 10px 25%;
 }

@@ -29,8 +29,8 @@
   </div>
   
   <div id='program'>
-    <div id='fzBox'>
-      <div id='fzOptions'>
+    <div class='fzBox'>
+      <div class='fzOptions'>
         <span id='colorSchemeText'>Color scheme: </span>
         <select name='colorSchemes' id='colorSchemeSelector'>
           <option value="standard">standard</option>
@@ -42,20 +42,60 @@
         <input type="text" id="functionInput" data-toggle="popover" title="Invalid equation" data-placement="top">
         <button id='plotItButton'>Plot it!</button>
         <br>
-        <button id='deleteButton' onclick='clearPts();'>Delete all points</button>
+        <button id='deleteButton' onclick='clearPts();'>Clear Plot</button>
         <button id='fitToPtsButton' onclick='fitToPts();'>Fit to Points</button>
         
       </div>
     </div>
     <div id='canvas'></div>
-  
+    <div class='fzBox'>
+      <div class="float-container">
+        <div class='float-child'>
+            <table>
+              <th></th>
+              <th>Min</th>
+              <th>Max</th>
+              <tr>
+                <td>Real</td>
+                <td><input type="text" id="plotRealMin" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
+                <td><input type="text" id="plotRealMax" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
+              </tr>
+              <tr>
+                <td>Im(i)</td>
+                <td><input type="text" id="plotImMin" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
+                <td><input type="text" id="plotImMax" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
+              </tr>
+            </table>
+            <button id='rescaleInputPlotButton'>Rescale Input Plot</button>
+        </div>
+    
+        <div class='float-child'>
+          <table>
+              <th></th>
+              <th>Min</th>
+              <th>Max</th>
+              <tr>
+                <td>Real</td>
+                <td><input type="text" id="MappedPlotRealMin" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
+                <td><input type="text" id="MappedPlotRealMax" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
+              </tr>
+              <tr>
+                <td>Im(i)</td>
+                <td><input type="text" id="MappedPlotImMin" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
+                <td><input type="text" id="MappedPlotImMax" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
+              </tr>
+            </table>
+          <button id='rescaleOutputPlotButton' onclick="rescaleOutput();">Rescale Output Plot</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
     <script src="complexNumber.js"></script>
     <script src="script.js"></script>
     <script src="complexPlanePlot.js"></script>
     <script src="equationParser.js"></script>
     <script>
-      //TODO: buggy popover
-
       
       let colorSchemeSelector = document.getElementById('colorSchemeSelector');
       colorSchemeSelector.oninput = function () {
@@ -78,8 +118,67 @@
           functionInput.removeAttribute("style");
         }
       }
+
+      // TODO: make all of this a lot cleaner and less repetitive
+      let rescaleInputButton = document.getElementById('rescaleInputPlotButton');
+      let inputRealMin = document.getElementById('plotRealMin');
+      let inputRealMax = document.getElementById('plotRealMax');
+      let inputImMin = document.getElementById('plotImMin');
+      let inputImMax = document.getElementById('plotImMax');
+      
+      rescaleInputButton.onclick = function() {
+        error = rescaleInputPlot(Number(inputRealMin.value), Number(inputRealMax.value), Number(inputImMin.value), Number(inputImMax.value));
+        if(error) {
+          $(inputRealMin).popover('show').off('click');
+          $(inputRealMax).popover('show').off('click');
+          $(inputImMin).popover('show').off('click');
+          $(inputImMax).popover('show').off('click');
+          inputRealMin.setAttribute("style", "border-color:#ff0000; background-color:#ffdddd;");
+          inputRealMax.setAttribute("style", "border-color:#ff0000; background-color:#ffdddd;");
+          inputImMin.setAttribute("style", "border-color:#ff0000; background-color:#ffdddd;");
+          inputImMax.setAttribute("style", "border-color:#ff0000; background-color:#ffdddd;");
+        }
+        else {
+          $(inputRealMin).popover('destroy');
+          $(inputRealMax).popover('destroy');
+          $(inputImMin).popover('destroy');
+          $(inputImMax).popover('destroy');
+          inputRealMin.removeAttribute("style");
+          inputRealMax.removeAttribute("style");
+          inputImMin.removeAttribute("style");
+          inputImMax.removeAttribute("style");
+        }
+      }
+
+      let rescaleOutputButton = document.getElementById('rescaleOutputPlotButton');
+      let outputRealMin = document.getElementById('MappedPlotRealMin');
+      let outputRealMax = document.getElementById('MappedPlotRealMax');
+      let outputImMin = document.getElementById('MappedPlotImMin');
+      let outputImMax = document.getElementById('MappedPlotImMax');
+      rescaleOutput = function() {
+        error = rescaleOutputPlot(Number(outputRealMin.value), Number(outputRealMax.value), Number(outputImMin.value), Number(outputImMax.value));
+        if(error) {
+          $(outputRealMin).popover('show').off('click');
+          $(outputRealMax).popover('show').off('click');
+          $(outputImMin).popover('show').off('click');
+          $(outputImMax).popover('show').off('click');
+          outputRealMin.setAttribute("style", "border-color:#ff0000; background-color:#ffdddd;");
+          outputRealMax.setAttribute("style", "border-color:#ff0000; background-color:#ffdddd;");
+          outputImMin.setAttribute("style", "border-color:#ff0000; background-color:#ffdddd;");
+          outputImMax.setAttribute("style", "border-color:#ff0000; background-color:#ffdddd;");
+        }
+        else {
+          $(outputRealMin).popover('destroy');
+          $(outputRealMax).popover('destroy');
+          $(outputImMin).popover('destroy');
+          $(outputImMax).popover('destroy');
+          outputRealMin.removeAttribute("style");
+          outputRealMax.removeAttribute("style");
+          outputImMin.removeAttribute("style");
+          outputImMax.removeAttribute("style");
+        }
+      }
     </script>
-  </div>
 
 </body>
 

@@ -39,6 +39,21 @@ class ComplexPlanePlot {
   }
 
   resetPlot(minReal, maxReal, minIm, maxIm, points) {
+    if(isNaN(minReal) || isNaN(maxReal) || isNaN(minIm) || isNaN(maxIm)) {
+      console.log("One of the inputs is nan: " + minReal +", " + maxReal + "," + minIm + ", " + maxIm);
+      throw new Error("One of the inputs is NaN!");
+    }
+    // check if everything is valid
+    if (minReal >= maxReal) {
+      console.log("minReal >= maxReal");
+      throw new Error("minReal > maxReal!");
+    }
+    else if (minIm >= maxIm) {
+      console.log("minIm >= maxIm");
+      throw new Error("minIm > maxIm!");
+    }
+
+    //reset if yes
     this.minReal = minReal;
     this.maxReal = maxReal;
     this.minIm = minIm;
@@ -85,7 +100,6 @@ class ComplexPlanePlot {
     stroke(this.axesColor);
     strokeWeight(2);
     // TODO: make this way cleaner (let plotToCanvasCoordinates also accept two numbers instead of complexNumber)
-    let origin = this.plotToCanvasCoordinates(new ComplexNumber(0, 0));
     if (this.minIm < 0 && this.maxIm > 0) {
       let leftXAxis = this.plotToCanvasCoordinates(new ComplexNumber(this.minReal, 0));
       let rightXAxis = this.plotToCanvasCoordinates(new ComplexNumber(this.maxReal, 0));
@@ -202,6 +216,11 @@ class ComplexPlanePlot {
       if (z.b > maxImVal) { maxImVal = z.b; }
     }
 
-    this.resetPlot(minReVal, maxReVal, minImVal, maxImVal, this.points);
+    try {
+          this.resetPlot(minReVal, maxReVal, minImVal, maxImVal, this.points);
+    }
+    catch (error) {
+      return;
+    }
   }
 }

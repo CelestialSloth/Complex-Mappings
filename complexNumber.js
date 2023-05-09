@@ -6,7 +6,6 @@ class ComplexNumber {
   constructor(a, b) {
     this.a = a;
     this.b = b;
-    this.color = color(0, 0, 0);
   }
 
   /** Add a complex number to this instance of a complex number. 

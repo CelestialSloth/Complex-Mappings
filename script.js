@@ -1,6 +1,6 @@
 let canvasDiv = document.getElementById('canvas');
 let canvasWidth = canvasDiv.offsetWidth;
-let canvasHeight = canvasWidth * 0.5;
+let canvasHeight = canvasWidth * 0.425;
 
 let maxRe = 4;
 let maxIm = 4;
@@ -12,15 +12,22 @@ let mappedPtsPlot;
 
 let fPostfix = ['z'];
 
+/** TODO: 
+* Dividing by zero errors in both over and when rescaling the graphs 
+* Add Re(z) and Im(z) to functionality
+* can it interpret log vs Log (capitals)? log yes, Log no -- good :)
+* Scaling
+*/
+
 function setFPostfix(fInfixStr) {
   let oldPostfix = fPostfix;
   
   try {
     let fTokenArray = EquationParser.tokenArray(fInfixStr);
     fPostfix = EquationParser.infixToPostfix(fTokenArray);
-
     // test a value
-    EquationParser.computePostfix(fPostfix, new ComplexNumber(1, 0));
+    // EquationParser.computePostfix(fPostfix, new ComplexNumber(1, 1));
+    // console.log("Tested a value");
     
     recalculatePlot();
   }
@@ -61,7 +68,7 @@ function drawfOfz() {
 
 function windowResized() {
   canvasWidth = canvasDiv.offsetWidth;
-  canvasHeight = canvasWidth * 0.5;
+  canvasHeight = canvasWidth * 0.425;
   ptsPlot.width = canvasWidth / 3;
   ptsPlot.height = ptsPlot.width;
   ptsPlot.x = canvasWidth / 12;
@@ -85,6 +92,26 @@ function recalculatePlot() {
   mappedPtsPlot.points = mappedPts;
 }
 
+function rescaleInputPlot(inputRealMin, inputRealMax, inputImMin, inputImMax) {
+  try{
+    ptsPlot.resetPlot(inputRealMin, inputRealMax, inputImMin, inputImMax, ptsPlot.points);
+  }
+  catch (error) {
+    console.log(error);
+    return error;
+  }
+  
+}
+function rescaleOutputPlot(outputRealMin, outputRealMax, outputImMin, outputImMax) {
+  try {
+    mappedPtsPlot.resetPlot(outputRealMin, outputRealMax, outputImMin, outputImMax, mappedPtsPlot.points);
+  }
+  catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
 // delete all the points
 function clearPts() {
   ptsPlot.points = [];
@@ -97,7 +124,7 @@ function fitToPts() {
 
 function setup() {  
   let canvas = createCanvas(canvasWidth, canvasHeight);
-  canvas.parent('program');
+  canvas.parent('canvas');
 
   ptsPlot = new ComplexPlanePlot(minRe, maxRe, minIm, maxIm, canvasWidth / 12, canvasHeight / 10, canvasWidth / 3, canvasWidth / 3);
 
@@ -145,7 +172,6 @@ function draw() {
 
     if (ptsPlot.inPlot(x, y)) {
       let z = ptsPlot.canvasToPlotCoordinates(x, y);
-      z.color = color(0, 0, 0);
       ptsPlot.points.push(z);
       mappedPtsPlot.points.push(f(z));
     }
