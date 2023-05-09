@@ -19,23 +19,27 @@ class ComplexPlanePlot {
     this.colorScheme = 'standard';
     this.axesColor = color(230, 100, 100);
     this.ptColor = color(0, 0, 0);
+    this.backgroundColor = color(255, 255, 255);
   }
 
   // manages the color scheme.
   colorSchemeManager() {
-    if (this.colorScheme == 'standard') {
-      this.axesColor = color(230, 100, 100);
-      this.ptColor = color(0, 0, 0);
-    }
-    else if (this.colorScheme == 'monochrome') {
+    //default - white background, red axes, black points
+    this.backgroundColor = color(255, 255, 255);
+    this.axesColor = color(230, 100, 100);
+    this.ptColor = color(0, 0, 0);
+
+    if (this.colorScheme == 'monochrome' || this.colorScheme == 'primary') {
       this.axesColor = color(100, 100, 100);
-      this.ptColor = color(0, 0, 0);
     }
-    else {
-      //standard for now
-      this.axesColor = color(230, 100, 100);
-      this.ptColor = color(0, 0, 0);
+
+    // dark mode of any scheme - defaults: grey axes, off-white points, black background
+    if (this.colorScheme.includes("dark")) {
+      this.axesColor = color(150, 150, 150);
+      this.ptColor = color(220, 220, 220);
+      this.backgroundColor = color(0, 0, 0);
     }
+    
   }
 
   resetPlot(minReal, maxReal, minIm, maxIm, points) {
@@ -62,7 +66,7 @@ class ComplexPlanePlot {
   }
 
   draw() {
-    fill(255);
+    fill(this.backgroundColor);
     stroke(0);
     strokeWeight(1)
     rect(this.x, this.y, this.width, this.height);
@@ -73,8 +77,11 @@ class ComplexPlanePlot {
 
     // plot all the points
     for (let i = 0; i < this.points.length; i++) {
-      if (this.colorScheme == 'rainbow') {
-        this.ptColor = this.colorWithKey(i);
+      if (this.colorScheme.includes('rainbow')) {
+        this.ptColor = this.rainbowColorWithKey(i);
+      }
+      if(this.colorScheme.includes('primary')) {
+        this.ptColor = this.primaryColorWithKey(i);
       }
       this.plotPoint(this.points[i]);
     }
@@ -159,7 +166,7 @@ class ComplexPlanePlot {
   }
 
   // enter consecutive keys, get rainbow colors
-  colorWithKey(key) {
+  rainbowColorWithKey(key) {
     let r = 255;
     let g = 0;
     let b = 0;
@@ -197,6 +204,35 @@ class ComplexPlanePlot {
       r = 255;
       g = 0;
       b = 255 * 5 - k;
+    }
+    return color(r, g, b);
+  }
+
+  // enter consecutive keys, get primary colors
+  primaryColorWithKey(key) {
+    let r = 255;
+    let g = 0;
+    let b = 0;
+
+    let k = (key % 255*3) + 1;
+
+    // red to yellow
+    if (k <= 255) {
+      r = 255;
+      g = k;
+      b = 0;
+    }
+    // yellow to blue
+    else if(k <= 255*2) {
+      r = 255*2 - k;
+      g = 255*2 - k;
+      b = k - 255;
+    }
+    // blue to red
+    else {
+      r = k - 255*2;
+      g = 0;
+      b = 255*3 - k;
     }
     return color(r, g, b);
   }
