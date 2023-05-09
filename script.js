@@ -13,10 +13,7 @@ let mappedPtsPlot;
 let fPostfix = ['z'];
 
 /** TODO: 
-* Dividing by zero errors in both over and when rescaling the graphs 
-* Add Re(z) and Im(z) to functionality
-* can it interpret log vs Log (capitals)? log yes, Log no -- good :)
-* Scaling
+* Add Re(z) and Im(z) to functionality. Also pi?
 */
 
 function setFPostfix(fInfixStr) {

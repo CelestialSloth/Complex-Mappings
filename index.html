@@ -21,9 +21,25 @@
   <div id='text-exp'>
     <h1 class>Complex Mappings</h1>
 
-    <p>This is an interactive program providing a visualization of mappings of complex functions, that is, functions with a complex input and a complex output.</p>
+    <p>Use this program to visualize mappings of functions with complex inputs and complex outputs, or symbolically, a function f: &#8450 &#8594 &#8450. Note that for functions log(z) and sqrt(z), only the principal value is displayed. </p>
+    <ol>
+      <li>Enter the function you would like to map into the <strong>f(z)=</strong> text box. Use standard operators: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, and <code>^</code>. The following functions are allowed: <code>conj</code> (complex conjugate), <code>mod</code> (modulus), <code>log</code>, <code>sqrt</code>, and <code>arg</code>. Only lowercase function names are accepted.</li>
+      <li>Click <strong>Plot it!</strong> to apply the function you entered.</li>
+      <li>Drag your mouse across the left complex plane to create a set of inputted points for f(z). Watch as the outputs appear on the right. </li>
+    </ol>
+    You can delete all input points with the <strong>Clear Plot</strong> button. <br><br>
+    
+    You can fit the output plot to show all of the outputted points with <strong>Fit to Points</strong>. <br><br>
+    
+    If you want to see how your points are mapped under a different function, enter the new function into the <strong>f(z)=</strong> textbox and click <strong>Plot it!</strong> again. <br><br>
+    
+    Change the color scheme to one of your liking with the <strong>Color scheme</strong> dropdown. <br><br>
+    
+    Finally, if you would like to manually rescale one of the plots, do so using the rescale tables at the very bottom. Note that all four of the plot's text boxes must have valid numerical inputs in order to rescale the plot.
+
+    <!-- <p>This is an interactive program providing a visualization of mappings of complex functions, that is, functions with a complex input and a complex output.</p>
     <p>To use the program, draw on the graph (input complex plane) on the left. As you draw, the points will be mapped using the function <em>f</em> and appear on the graph on the right.</p>
-    <p>Note that for some functions, like <em>f(z)=log(z)</em> and <em>f(z)=sqrt(z)</em>, there are multiple (or even infinite) values of <em>f(z)</em> that would be satisfactory. In these cases, we choose the value of <em>f(z)</em> belonging to the principle branch of <em>f</em>. To visualize all satisfactory values, you would need to work with Riemann Surfaces (and would need more than two dimensions).</p>
+    <p>Note that for some functions, like <em>f(z)=log(z)</em> and <em>f(z)=sqrt(z)</em>, there are multiple (or even infinite) values of <em>f(z)</em> that would be satisfactory. In these cases, we choose the value of <em>f(z)</em> belonging to the principle branch of <em>f</em>. To visualize all satisfactory values, you would need to work with Riemann Surfaces (and would need more than two dimensions).</p> -->
 
     
   </div>
@@ -38,8 +54,8 @@
           <option value = "primary">primary</option>
           <option value="rainbow">rainbow</option>
           <option value="dark">dark mode</option>
-          <option value="dark rainbow">dark rainbow</option>
           <option value="dark primary">dark primary</option>
+          <option value="dark rainbow">dark rainbow</option>
         </select>
         <br>
         <label for="f(z)">f(z)=</label>
@@ -61,12 +77,12 @@
               <th>Max</th>
               <tr>
                 <td>Real</td>
-                <td><input type="text" id="plotRealMin" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
+                <td><input type="text" id="plotRealMin" class="plotBoundInput" data-toggle="popover" title="Invalid" data-placement='left'></td>
                 <td><input type="text" id="plotRealMax" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
               </tr>
               <tr>
                 <td>Im(i)</td>
-                <td><input type="text" id="plotImMin" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
+                <td><input type="text" id="plotImMin" class="plotBoundInput" data-toggle="popover" title="Invalid" data-placement='left'></td>
                 <td><input type="text" id="plotImMax" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
               </tr>
             </table>
@@ -80,12 +96,12 @@
               <th>Max</th>
               <tr>
                 <td>Real</td>
-                <td><input type="text" id="MappedPlotRealMin" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
+                <td><input type="text" id="MappedPlotRealMin" class="plotBoundInput" data-toggle="popover" title="Invalid" data-placement='left'></td>
                 <td><input type="text" id="MappedPlotRealMax" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
               </tr>
               <tr>
                 <td>Im(i)</td>
-                <td><input type="text" id="MappedPlotImMin" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
+                <td><input type="text" id="MappedPlotImMin" class="plotBoundInput" data-toggle="popover" title="Invalid" data-placement='left'></td>
                 <td><input type="text" id="MappedPlotImMax" class="plotBoundInput" data-toggle="popover" title="Invalid"></td>
               </tr>
             </table>
